@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
@@ -19,7 +20,7 @@ function App() {
 
   const addTask = () => {
     if (inputValue.trim() !== "") {
-      setTasks([...tasks, { text: inputValue, completed: false }]);
+      setTasks([{ text: inputValue, completed: false }, ...tasks]); // Latest task appears at the top
       setInputValue("");
     }
   };
@@ -43,11 +44,12 @@ function App() {
     }
     setEditIndex(null);
     setEditValue("");
-  };  
+  };
 
   const deleteTask = (index) => {
-    setTasks(tasks.filter((_, i) => i !== index));
-    console.log("Ho")
+    if (window.confirm("Are you sure you want to delete this task?")) { 
+      setTasks(tasks.filter((_, i) => i !== index));
+    }
   };
 
   const toggleCompletion = (index) => {
@@ -65,7 +67,7 @@ function App() {
       <Navbar />
       <section>
         <div className="container">
-          <h2>iTodo - Manage all your todos here</h2>
+          <h2>ToDoHub - Manage all your todos here</h2>
           <p>Add A New Todo</p>
           <div className="addContainer">
             <input
@@ -134,6 +136,7 @@ function App() {
             ))}
         </div>
       </section>
+      <Footer/>
     </>
   );
 }

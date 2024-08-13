@@ -1,26 +1,40 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #1b1b1b;
+  color: #f5f5f5;
+}
 
 section {
-  font-family: "Roboto", sans-serif;
-  background-color: #8178b8;
+  background-color: #1b1b1b;
   min-height: calc(100vh - 68px);
   box-sizing: border-box;
   padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .container {
-  width: 40%;
-  margin: 0 auto;
-  background-color: #eeeeee;
+  width: 50%;
+  background-color: #2a2a2a;
   border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease-in-out;
+}
+
+.container:hover {
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.8);
 }
 
 h2 {
   text-align: center;
-  color: #2c3e50;
+  color: #ffcc00;
   margin-bottom: 20px;
+  font-size: 2rem;
 }
 
 .addContainer {
@@ -28,26 +42,41 @@ h2 {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 input[type="text"] {
   width: 70%;
-  height: 35px;
+  height: 40px;
   border-radius: 5px;
-  border: 1px solid #ddd;
-  padding: 0 8px;
+  border: none;
+  padding: 0 10px;
+  background-color: #444;
+  color: #f5f5f5;
+  font-size: 1rem;
+}
+
+input[type="text"]::placeholder {
+  color: #888;
 }
 
 .addBtn {
-  height: 35px;
-  width: 70px;
-  font-size: large;
+  height: 40px;
+  width: 80px;
+  font-size: 1rem;
   font-weight: 600;
-  background-color: rgb(100, 51, 145);
+  background-color: #ff5722;
   border: none;
   border-radius: 5px;
   color: white;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.addBtn:hover {
+  background-color: #e64a19;
 }
 
 .showCompletedContainer {
@@ -60,28 +89,34 @@ input[type="text"] {
   margin-right: 10px;
   width: 18px;
   height: 18px;
-  accent-color: rgb(100, 51, 145); /* Custom checkbox color */
+  accent-color: #ffcc00;
 }
 
 .showCompletedContainer label {
-  font-size: 16px;
+  font-size: 1rem;
+  color: #ffcc00;
 }
 
 .task {
   display: flex;
   align-items: center;
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 10px;
+  background-color: #333;
+  border-radius: 10px;
+  padding: 15px;
   margin-bottom: 10px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s;
+}
+
+.task:hover {
+  transform: scale(1.02);
 }
 
 .task input[type="checkbox"] {
   width: 20px;
   height: 20px;
   margin-right: 10px;
-  accent-color: rgb(100, 51, 145); /* Custom checkbox color */
+  accent-color: #ffcc00;
 }
 
 .textContainer {
@@ -90,14 +125,12 @@ input[type="text"] {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #f5f5f5;
 }
 
 .textContainer.completed {
   text-decoration: line-through;
   color: #888;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .buttonsContainer {
@@ -106,13 +139,18 @@ input[type="text"] {
 }
 
 .buttonsContainer button {
-  background-color: rgb(100, 51, 145);
+  background-color: #ff5722;
   border: none;
   border-radius: 5px;
   color: white;
   cursor: pointer;
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.buttonsContainer button:hover {
+  background-color: #e64a19;
 }
 
 .material-icons {
@@ -122,22 +160,25 @@ input[type="text"] {
 .editInput {
   width: calc(100% - 90px);
   padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: none;
+  border-radius: 5px;
+  background-color: #444;
+  color: #f5f5f5;
 }
 
 .saveBtn {
   padding: 8px 12px;
-  background-color: #3498db;
-  color: white;
+  background-color: #ffcc00;
+  color: black;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   margin-left: 10px;
+  transition: background-color 0.3s;
 }
 
-.editBtn {
-  margin-left: 10px;
+.saveBtn:hover {
+  background-color: #e6b800;
 }
 
 @media screen and (max-width: 1000px) {
@@ -153,17 +194,16 @@ input[type="text"] {
 }
 
 @media screen and (max-width: 400px) {
-    .addContainer{
-        flex-direction: column;
-        gap: 10px;
-    }
+  .addContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .addContainer input{
-        width: 90%;
-    }
+  .addContainer input {
+    width: 90%;
+  }
 
-    .addBtn{
-        width: 90%;
-    }
+  .addBtn {
+    width: 100%;
+  }
 }
-  
