@@ -1,142 +1,159 @@
-import { useState, useEffect } from "react";
-import "./App.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import React, { useState, useEffect } from 'react';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import './App.css'; // Import your CSS for styles
 
 function App() {
-  const [inputValue, setInputValue] = useState("");
-  const [tasks, setTasks] = useState(() => {
-    const response = localStorage.getItem("tasks");
-    const data = JSON.parse(response);
-    return data ? data : [];
-  });
-  const [editIndex, setEditIndex] = useState(null);
-  const [editValue, setEditValue] = useState("");
-  const [showCompleted, setShowCompleted] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [taskInput, setTaskInput] = useState('');
+  const [showCompleted, setShowCompleted] = useState(true);
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    setTasks(savedTasks);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
   const addTask = () => {
-    if (inputValue.trim() !== "") {
-      setTasks([{ text: inputValue, completed: false }, ...tasks]); // Latest task appears at the top
-      setInputValue("");
+    if (taskInput.trim() === '') return;
+    const newTask = {
+      id: Date.now(),
+      text: taskInput,
+      completed: false,
+      editing: false, // Add an editing state for each task
+    };
+    setTasks([newTask, ...tasks]);
+    setTaskInput('');
+  };
+
+  const deleteTask = (id) => {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      setTasks(tasks.filter((task) => task.id !== id));
     }
   };
 
-  const startEditTask = (index) => {
-    setEditIndex(index);
-    setEditValue(tasks[index].text);
+  const toggleTaskCompletion = (id) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
-  const saveEditTask = () => {
-    if (editValue.trim() === "") {
-      deleteTask(editIndex);
+  const toggleEditTask = (id) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, editing: !task.editing } : task
+      )
+    );
+  };
+
+  const saveTask = (id, newText) => {
+    if (newText.trim() === '') {
+      deleteTask(id);
     } else {
-      const updatedTasks = tasks.map((task, index) => {
-        if (index === editIndex) {
-          return { ...task, text: editValue };
-        }
-        return task;
-      });
-      setTasks(updatedTasks);
-    }
-    setEditIndex(null);
-    setEditValue("");
-  };
-
-  const deleteTask = (index) => {
-    if (window.confirm("Are you sure you want to delete this task?")) { 
-      setTasks(tasks.filter((_, i) => i !== index));
+      setTasks(
+        tasks.map((task) =>
+          task.id === id
+            ? { ...task, text: newText, editing: false } // Disable editing mode after saving
+            : task
+        )
+      );
     }
   };
 
-  const toggleCompletion = (index) => {
-    const updatedTasks = tasks.map((task, i) => {
-      if (i === index) {
-        return { ...task, completed: !task.completed };
-      }
-      return task;
-    });
-    setTasks(updatedTasks);
+  const handleShowCompleted = () => {
+    setShowCompleted(!showCompleted);
   };
 
   return (
     <>
       <Navbar />
+
       <section>
         <div className="container">
-          <h2>ToDoHub - Manage all your todos here</h2>
-          <p>Add A New Todo</p>
+          <h2>To-Do List</h2>
+
           <div className="addContainer">
             <input
               type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              value={taskInput}
+              onChange={(e) => setTaskInput(e.target.value)}
               placeholder="Enter a new task"
             />
             <button className="addBtn" onClick={addTask}>
               Add
             </button>
           </div>
+
           <div className="showCompletedContainer">
             <input
+              id='showCompletedBox'
               type="checkbox"
-              id="showCompleted"
               checked={showCompleted}
-              onChange={(e) => setShowCompleted(e.target.checked)}
+              onChange={handleShowCompleted}
             />
-            <label htmlFor="showCompleted">Show Completed</label>
+            <label htmlFor='showCompletedBox'>Show Completed</label>
           </div>
-          <hr />
-          <h3>Your Todo</h3>
+
           {tasks
-            .filter((task) => showCompleted || !task.completed)
-            .map((task, index) => (
-              <div key={index} className="task">
-                <input
-                  type="checkbox"
-                  checked={task.completed}
-                  onChange={() => toggleCompletion(index)}
-                />
-                {editIndex === index ? (
-                  <>
-                    <input
-                      type="text"
-                      value={editValue}
-                      onChange={(e) => setEditValue(e.target.value)}
-                      className="editInput"
-                      autoFocus
-                    />
-                    <button className="saveBtn" onClick={saveEditTask}>
+            .filter((task) => (showCompleted ? true : !task.completed))
+            .map((task) => (
+              <div className="task" key={task.id}>
+                {!task.editing && (
+                  <input
+                    type="checkbox"
+                    checked={task.completed}
+                    onChange={() => toggleTaskCompletion(task.id)}
+                  />
+                )}
+
+                {task.editing ? (
+                  <input
+                    className="editInput"
+                    value={task.text}
+                    onChange={(e) =>
+                      setTasks(
+                        tasks.map((t) =>
+                          t.id === task.id ? { ...t, text: e.target.value } : t
+                        )
+                      )
+                    }
+                  />
+                ) : (
+                  <p
+                    className={`textContainer ${task.completed ? 'completed' : ''
+                      }`}
+                  >
+                    {task.text}
+                  </p>
+                )}
+
+                <div className="buttonsContainer">
+                  {task.editing ? (
+                    <button className='saveBtn' onClick={() => saveTask(task.id, task.text)}>
                       <span className="material-icons">save</span>
                     </button>
-                  </>
-                ) : (
-                  <>
-                    <p
-                      className={`textContainer ${
-                        task.completed ? "completed" : ""
-                      }`}
-                    >
-                      {task.text}
-                    </p>
-                    <div className="buttonsContainer">
-                      <button className="editBtn" onClick={() => startEditTask(index)}>
+                  ) : (
+                    <>
+                      <button onClick={() => toggleEditTask(task.id)}>
                         <span className="material-icons">edit</span>
                       </button>
-                      <button onClick={() => deleteTask(index)}>
+                      <button onClick={() => deleteTask(task.id)}>
                         <span className="material-icons">delete</span>
                       </button>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
+                </div>
               </div>
             ))}
         </div>
       </section>
-      <Footer/>
+
+      <Footer />
     </>
   );
 }
