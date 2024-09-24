@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import './App.css'; // Import your CSS for styles
+import './App.css';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -23,7 +23,7 @@ function App() {
       id: Date.now(),
       text: taskInput,
       completed: false,
-      editing: false, // Add an editing state for each task
+      editing: false,
     };
     setTasks([newTask, ...tasks]);
     setTaskInput('');
@@ -58,7 +58,7 @@ function App() {
       setTasks(
         tasks.map((task) =>
           task.id === id
-            ? { ...task, text: newText, editing: false } // Disable editing mode after saving
+            ? { ...task, text: newText, editing: false }
             : task
         )
       );
