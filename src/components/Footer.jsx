@@ -17,13 +17,13 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Follow Us</h3>
           <div className="social-links">
-            <a href="https://www.instagram.com/mddayyan007/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/prajna.ep03/" target="_blank" rel="noopener noreferrer">
               <i className="fab fa-instagram"></i>
             </a>
-            <a href="https://www.linkedin.com/in/mohammed-dayyan-6718852aa/" target="_blank" rel="noopener noreferrer">
+            <a href="https://linkedin.com/in/prajna-ep-8a23a6264/" target="_blank" rel="noopener noreferrer">
               <i className="fab fa-linkedin"></i>
             </a>
-            <a href="https://github.com/mdAYYAN-007/" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/PrajnaEP" target="_blank" rel="noopener noreferrer">
               <i className="fab fa-github"></i>
             </a>
           </div>
